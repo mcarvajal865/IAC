@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "IAC"
+version = "0.1.0"
+description = "Proyecto IAC - CRUD simple con Typer y JSON"
+authors = ["Mateo Carvajal Zapata <tu_correo@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+typer = "^0.9"
+rich = "^13.4"
+
+[tool.poetry.dev-dependencies]
+ruff = "^0.0.361"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "W", "C90"]
+exclude = ["data", ".venv", "tests"]
+
+
