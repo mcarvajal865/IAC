@@ -1,15 +1,5 @@
-# Python
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
 
-# Entornos virtuales
-.venv/
-.virtualenvs/
 
 # PyCharm
-.idea/
 
-# Data
-data/database.json
