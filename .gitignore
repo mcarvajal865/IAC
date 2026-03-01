@@ -1,5 +1,6 @@
-__pycache__/
-
-
-# PyCharm
-
+.venv/
+data/
+src/
+pyproject.toml.save/
+poetry.lock/
+.github/
