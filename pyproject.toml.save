@@ -2,7 +2,7 @@
 name = "IAC"
 version = "0.1.0"
 description = "Proyecto IAC - CRUD simple con Typer y JSON"
-authors = ["Mateo Carvajal Zapata <tu_correo@example.com>"]
+authors = ["Mateo Carvajal Zapata, Manuela Martinez Gil <carvajalzapatamateo@gmail.com>,<martinezgilmanuela@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]

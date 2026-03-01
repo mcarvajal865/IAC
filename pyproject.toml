@@ -2,8 +2,8 @@
 name = "IAC"
 version = "0.1.0"
 description = "Proyecto IAC - CRUD simple con Typer y JSON"
-authors = ["Mateo Carvajal Zapata <tu_correo@example.com>"]
-package-mode = false   # NO instala tu proyecto como paquete
+authors = ["Mateo Carvajal Zapata, Manuela Martinez Gil <carvajalzapatamateo@gmail.com>,<martinezgilmanuela@gmail.com>"]
+package-mode = false  
 readme = "README.md"
 
 [tool.poetry.dependencies]
