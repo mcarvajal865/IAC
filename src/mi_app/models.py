@@ -14,3 +14,10 @@ class Product: #Clase Producto, se guarda su información
     name: str
     price: float
     stock: int
+
+@dataclass
+class Company: #clase Empresa, guarda su información
+    id: int
+    name: str
+    nit: str
+    services: List[Service] = field(default_factory=list)
