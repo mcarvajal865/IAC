@@ -14,6 +14,8 @@ console = Console() #Muestra tablas bonitas
 storage = JSONStorage(Path("data/database.json"))
 service = IACService(storage)
 
+#Company
+
 @app.command()
 def create_company(id: int, name: str, nit: str) -> str:
     """Crea nueva empresa"""
@@ -45,4 +47,22 @@ def delete_company(id:int):
     service.delete_company(id)
     typer.echo("Empresa eliminada exitosamente")
 
+@app.command()
+def update_company(id: int, name: str, nit: str):
+    """Actualiza nombre y NIT de una empresa existente"""
+    service.update_company(id, name, nit)
+    typer.echo("Empresa actualizada correctamente")
 
+#Productos
+
+@app.command()
+def add_product(company_id: int, product_id: int, name: str, price: float):
+    """Agregar producto"""
+    product_data = {"id": product_id, "name": name, "price": price}
+    service.add_product_to_company(company_id, product_data)
+    typer.echo("Producto agregado")
+
+
+if __name__ == "__main__":
+    """Corre la aplicaion CLI"""
+    app()
