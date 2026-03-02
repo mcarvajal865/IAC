@@ -21,3 +21,4 @@ class Company: #clase Empresa, guarda su información
     name: str
     nit: str
     services: List[Service] = field(default_factory=list)
+    products: List[Product] = field(default_factory=list)
