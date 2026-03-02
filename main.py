@@ -86,6 +86,13 @@ def update_product(company_id: int, product_id: int, name: str, price: float):
     service.update_product_in_company(company_id, product_id, name, price)
     typer.echo("Producto actualizado")
 
+@app.command()
+def delete_product(company_id: int, product_id: int):
+    """Eliminar producto"""
+    service.delete_product_from_company(company_id, product_id)
+    typer.echo("Producto eliminado")
+
+
 
 if __name__ == "__main__":
     """Corre la aplicaion CLI"""
