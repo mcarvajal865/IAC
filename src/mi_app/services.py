@@ -6,3 +6,7 @@ from .exceptions import(
     DuplicateCompanyError,
     InvalidCompanyDataError
 )
+
+class IACService:
+    def __init__(self, storage: StorageInterface) -> None:
+        self._storage = storage
