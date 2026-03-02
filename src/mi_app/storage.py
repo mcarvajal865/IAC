@@ -11,7 +11,7 @@ class StorageInterface(Protocol):
 class JSONStorage:
     """Implementación del almacenamiento en formato JSON, responsable de leer y escribir el archivo"""
 
-    def __init__(self, filepath: Path):
+    def __init__(self, filepath: Path) -> None:
         """Inicializa la ruta donde se almacenará el archivo JSON"""
         self.filepath = filepath
 
