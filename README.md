@@ -43,3 +43,22 @@ Almacenamiento de información en archivos de formato JSON, sin depender de sist
 | **Services** | `services.py` | [cite_start]Contiene la lógica de negocio, validaciones y reglas de gestión empresarial[cite: 11, 12]. |
 | **Exceptions** | `exceptions.py` | [cite_start]Define errores personalizados para un manejo adecuado de excepciones[cite: 16]. |
 | **CLI** | `main.py` | [cite_start]Interfaz de línea de comandos para la interacción con el usuario desde la terminal[cite: 12, 14]. |
+
+# 🛠️ Detalles Técnicos y Alcance
+El proyecto está orientado a fines académicos y demuestra la implementación de buenas prácticas de desarrollo en Python:
+
+
+- ### Tipado Estático: 
+Uso de typing y dataclasses para mayor robustez.
+
+
+- ### Manejo de Excepciones: 
+Sistema personalizado de errores (ej. CompanyNotFoundError, DuplicateCompanyError).
+
+
+- ### Interfaz:
+Interacción exclusiva mediante la terminal (CLI), sin interfaz gráfica.
+
+
+- ### Pruebas: 
+Estructura preparada para la implementación de pruebas unitarias
