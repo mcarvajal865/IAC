@@ -59,3 +59,11 @@ class IACService:
         companies.append(new_company)
         data["companies"] = companies
         self._storage.save(data)
+
+    def delete_company(self, company_id: int) -> None:
+        """Elimina una empresa por su ID"""
+        data = self._get_all_data()
+        company = self._get_company(data, company_id)
+
+        data["companies"].remove(company)
+        self._storage.save(data)
