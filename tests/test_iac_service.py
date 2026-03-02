@@ -19,6 +19,7 @@ def service(tmp_path):
     return IACService(storage)
 
 
+
 def test_create_company_success(service):
     """Crea una empresa"""
     company = Company(id=1, name="IAC", nit="123")
