@@ -125,6 +125,12 @@ def update_service(company_id: int, service_id: int, name: str, price: float):
     service.update_service_in_company(company_id, service_id, name, price)
     typer.echo("Servicio actualizado")
 
+@app.command()
+def delete_service(company_id: int, service_id: int):
+    """Eliminar servicio"""
+    service.delete_service_from_company(company_id, service_id)
+    typer.echo("Servicio eliminado")
+
 
 if __name__ == "__main__":
     """Corre la aplicaion CLI"""
