@@ -4,7 +4,9 @@ from .storage import StorageInterface
 from .exceptions import(
     CompanyNotFoundError,
     DuplicateCompanyError,
-    InvalidCompanyDataError
+    InvalidCompanyDataError,
+    ProductNotFoundError,
+    ServiceNotFoundError
 )
 
 class IACService:
@@ -95,6 +97,20 @@ class IACService:
 
     def delete_product_from_company(self, company_id: int, product_id: int) -> None:
         """Elimina producto de una empresa"""
+        data = self._get_all_data()
+        company = self._get_company(data, company_id)
+
+        products = company.get("products", [])
+
+        for products in products:
+            if product["id"] == product_id:
+                products.remove(product)
+                self._storage.save(data)
+                return
+
+        raise ProductNotFoundError(f"El producto con ID {company_id} no existe")
+
+    def update_product_in_company(self, company_id: int, product_id: int, new_name: str, new_price: float) -> None:
         data = self._get_all_data()
         company = self._get_company(data, company_id)
 
