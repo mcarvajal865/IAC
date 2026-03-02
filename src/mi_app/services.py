@@ -68,6 +68,16 @@ class IACService:
         data["companies"].remove(company)
         self._storage.save(data)
 
+    def update_company(self, company_id: int, new_name: str, new_nit: str) -> None:
+        """Acutualiza el nombre y NIT de una empresa existente"""
+        data = self._get_all_data()
+        company = self._get_company(data, company_id)
+
+        company["name"] = new_name
+        company["nit"] = new_nit
+
+        self._storage.save(data)
+
     def add_product_to_company(self, company_id: int, product_data: Dict) -> None:
         """Agregar un producto """
 
