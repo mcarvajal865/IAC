@@ -92,6 +92,14 @@ def delete_product(company_id: int, product_id: int):
     service.delete_product_from_company(company_id, product_id)
     typer.echo("Producto eliminado")
 
+#Servicios
+
+@app.command()
+def add_service(company_id: int, service_id: int, name: str, price: float):
+    """Agregar servicio"""
+    service_data = {"id": service_id, "name": name, "price": price}
+    service.add_service_to_company(company_id, service_data)
+    typer.echo("Servicio agregado")
 
 
 if __name__ == "__main__":
