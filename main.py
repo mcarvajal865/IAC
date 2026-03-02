@@ -119,6 +119,12 @@ def list_services(company_id: int):
         table.add_row(str(service_item["id"]), service_item["name"], str(service_item["price"]))
     console.print(table)
 
+@app.command()
+def update_service(company_id: int, service_id: int, name: str, price: float):
+    """Modificar servicio"""
+    service.update_service_in_company(company_id, service_id, name, price)
+    typer.echo("Servicio actualizado")
+
 
 if __name__ == "__main__":
     """Corre la aplicaion CLI"""
