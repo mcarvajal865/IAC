@@ -17,7 +17,7 @@ class IACService:
         """Para obtener todos los datos del JSON"""
         return self._storage.load()
 
-    def _get_company(self, data: Dict, company_id: int ) -> Dict[str, Any]:
+    def _get_company(self, data: Dict[str, Any], company_id: int ) -> Dict[str, Any]:
         """Busca empresa por su ID, si no existe lanza error"""
         companies = data.get("companies", [])
 
@@ -86,7 +86,7 @@ class IACService:
         company = self._get_company(data, company_id)
         return company.get("products", [])
 
-    def add_product_to_company(self, company_id: int, product_data: Dict) -> None:
+    def add_product_to_company(self, company_id: int, product_data: Dict[str, Any]) -> None:
         """Agregar un producto """
 
         data = self._get_all_data()
@@ -102,13 +102,13 @@ class IACService:
 
         products = company.get("products", [])
 
-        for products in products:
+        for product in products:
             if product["id"] == product_id:
                 products.remove(product)
                 self._storage.save(data)
                 return
 
-        raise ProductNotFoundError(f"El producto con ID {company_id} no existe")
+        raise ProductNotFoundError(f"El producto con ID {product_id} no existe")
 
     def update_product_in_company(self, company_id: int, product_id: int, new_name: str, new_price: float) -> None:
         data = self._get_all_data()
@@ -129,7 +129,7 @@ class IACService:
         return company.get("services", [])
 
 
-    def add_service_to_company(self, company_id: int, service_data: Dict) -> None:
+    def add_service_to_company(self, company_id: int, service_data: Dict[str, Any]) -> None:
         """Agregar un servicio """
         data = self._get_all_data()
         company = self._get_company(data, company_id)
