@@ -17,14 +17,14 @@ service = IACService(storage)
 #Company
 
 @app.command()
-def create_company(id: int, name: str, nit: str) -> str:
+def create_company(id: int, name: str, nit: str) -> None:
     """Crea nueva empresa"""
     company = Company(id = id, name = name, nit = nit)
     service.create_company(company)
     typer.echo("Empresa creada exitosamente")
 
 @app.command()
-def list_companies():
+def list_companies() -> None:
     """Lista todas las empresas registradas, usando tablas"""
 
     companies = service.list_companies()
@@ -42,13 +42,13 @@ def list_companies():
     console.print(table)
 
 @app.command()
-def delete_company(id:int):
+def delete_company(id:int) -> None:
     """Elimina una empresa, por id"""
     service.delete_company(id)
     typer.echo("Empresa eliminada exitosamente")
 
 @app.command()
-def update_company(id: int, name: str, nit: str):
+def update_company(id: int, name: str, nit: str) -> None:
     """Actualiza nombre y NIT de una empresa existente"""
     service.update_company(id, name, nit)
     typer.echo("Empresa actualizada correctamente")
@@ -56,14 +56,14 @@ def update_company(id: int, name: str, nit: str):
 #Productos
 
 @app.command()
-def add_product(company_id: int, product_id: int, name: str, price: float):
+def add_product(company_id: int, product_id: int, name: str, price: float) -> None:
     """Agregar producto"""
     product_data = {"id": product_id, "name": name, "price": price}
     service.add_product_to_company(company_id, product_data)
     typer.echo("Producto agregado")
 
 @app.command()
-def list_products(company_id: int):
+def list_products(company_id: int) -> None:
     """Listar productos"""
 
     products = service.list_products(company_id)
@@ -81,13 +81,13 @@ def list_products(company_id: int):
     console.print(table)
 
 @app.command()
-def update_product(company_id: int, product_id: int, name: str, price: float):
+def update_product(company_id: int, product_id: int, name: str, price: float)-> None:
     """Modificar producto"""
     service.update_product_in_company(company_id, product_id, name, price)
     typer.echo("Producto actualizado")
 
 @app.command()
-def delete_product(company_id: int, product_id: int):
+def delete_product(company_id: int, product_id: int)-> None:
     """Eliminar producto"""
     service.delete_product_from_company(company_id, product_id)
     typer.echo("Producto eliminado")
@@ -95,14 +95,14 @@ def delete_product(company_id: int, product_id: int):
 #Servicios
 
 @app.command()
-def add_service(company_id: int, service_id: int, name: str, price: float):
+def add_service(company_id: int, service_id: int, name: str, price: float)-> None:
     """Agregar servicio"""
     service_data = {"id": service_id, "name": name, "price": price}
     service.add_service_to_company(company_id, service_data)
     typer.echo("Servicio agregado")
 
 @app.command()
-def list_services(company_id: int):
+def list_services(company_id: int) -> None:
     """Listar servicios"""
 
     services = service.list_services(company_id)
@@ -120,13 +120,13 @@ def list_services(company_id: int):
     console.print(table)
 
 @app.command()
-def update_service(company_id: int, service_id: int, name: str, price: float):
+def update_service(company_id: int, service_id: int, name: str, price: float) -> None:
     """Modificar servicio"""
     service.update_service_in_company(company_id, service_id, name, price)
     typer.echo("Servicio actualizado")
 
 @app.command()
-def delete_service(company_id: int, service_id: int):
+def delete_service(company_id: int, service_id: int) -> None:
     """Eliminar servicio"""
     service.delete_service_from_company(company_id, service_id)
     typer.echo("Servicio eliminado")
