@@ -39,3 +39,10 @@ def list_companies():
         table.add_row(str(company["id"]), company["name"], company["nit"])
     console.print(table)
 
+@app.command()
+def delete_company(id:int):
+    """Elimina una empresa, por id"""
+    service.delete_company(id)
+    typer.echo("Empresa eliminada exitosamente")
+
+
