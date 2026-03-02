@@ -1,9 +1,28 @@
-# IAC
-Proyecto para Codigo Limpio
+# IAC – Sistema de Gestión Empresarial
 
-Con este proyecto se busca desarrollar un sistema que optimice la gestión de la empresa IAC, ya que actualmente su base de datos se administra mediante Microsoft Office. Aunque es una herramienta sólida y funcional, su interfaz puede resultar poco intuitiva para usuarios no expertos, lo que dificulta la eficiencia en los procesos diarios.
+# 📖 1. Explicación del Proyecto
 
-Esta propuesta tiene como objetivo modernizar y mejorar la gestión interna de la empresa, implementando un sistema más ágil, intuitivo y eficiente, que facilite el trabajo de los usuarios y optimice los procesos administrativos.
+IAC es un sistema de gestión empresarial desarrollado en Python con arquitectura modular y principios de código limpio.
+
+# 🎯 Propósito
+
+Modernizar la administración interna de la empresa IAC, reemplazando el uso de herramientas como Microsoft Office por un sistema más estructurado, mantenible y escalable.
+
+# 📦 Alcance
+
+El sistema permite:
+
+- Registrar empresas
+
+- Agregar productos y servicios
+
+- Listar información almacenada
+
+- Persistir datos en archivos JSON
+
+- Manejar errores mediante excepciones personalizadas
+
+- Ejecutar operaciones desde una CLI (Interfaz de Línea de Comandos)
 
 # 🚀 Características
 
@@ -62,3 +81,46 @@ Interacción exclusiva mediante la terminal (CLI), sin interfaz gráfica.
 
 - ### Pruebas: 
 Estructura preparada para la implementación de pruebas unitarias
+
+# ⚙️ 2. Guía de Instalación (usando uv)
+
+### 1. Clonar el repositorio
+
+git clone https://github.com/mcarvajal865/IAC.git
+cd IAC
+
+### 2. Crear entorno virtual e instalar dependencias con uv
+
+uv sync
+
+# 💻 Manual de la CLI
+
+La aplicación se ejecuta mediante:
+
+#### uv run python -m mi_app.cli
+
+# 📌 Ejemplos de comandos
+
+## ➤ Crear empresa
+#### uv run python -m mi_app.cli crear-empresa --id 1 --nombre "IAC SAS" --nit "900123456"
+
+## ➤ Listar empresas
+#### uv run python -m mi_app.cli listar-empresas
+
+## ➤ Agregar producto
+#### uv run python -m mi_app.cli agregar-producto --empresa 1 --id 101 --nombre "Laptop" --precio 2500 --stock 10
+
+## ➤ Agregar servicio
+#### uv run python -m mi_app.cli agregar-servicio --empresa 1 --id 201 --nombre "Consultoria" --precio 500
+
+# 🧪 4. Instrucciones de Testing
+El proyecto incluye 10 pruebas unitarias desarrolladas con pytest.
+
+Para ejecutarlas:
+
+#### uv run pytest
+
+Si todo funciona correctamente, deberías ver:
+
+#### 10 passed
+
