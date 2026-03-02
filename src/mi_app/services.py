@@ -114,12 +114,31 @@ class IACService:
         data = self._get_all_data()
         company = self._get_company(data, company_id)
 
+        for product in company.get("products", []):
+            if product["id"] == product_id:
+                product["name"] = new_name
+                product["price"] = new_price
+                self._storage.save(data)
+                return
+
+        raise ProductNotFoundError(f"Producto con ID {product_id} no existe")
+
+    def list_services(self, company_id: int) -> List[Dict[str, Any]]:
+        data = self._get_all_data()
+        company = self._get_company(data, company_id)
+        return company.get("services", [])
+
 
     def add_service_to_company(self, company_id: int, service_data: Dict) -> None:
         """Agregar un servicio """
-
         data = self._get_all_data()
         company = self._get_company(data, company_id)
 
         company["services"].append(service_data)
         self._storage.save(data)
+
+    def delete_service_from_company(self, company_id: int, service_id: int) -> None:
+        data = self._get_all_data()
+        company = self._get_company(data, company_id)
+
+        services = company.get("services", [])
