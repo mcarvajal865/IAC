@@ -76,3 +76,12 @@ class IACService:
 
         company["products"].append(product_data)
         self._storage.save(data)
+
+    def add_service_to_company(self, company_id: int, service_data: Dict) -> None:
+        """Agregar un servicio """
+
+        data = self._get_all_data()
+        company = self._get_company(data, company_id)
+
+        company["services"].append(service_data)
+        self._storage.save(data)
