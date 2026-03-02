@@ -80,6 +80,12 @@ def list_products(company_id: int):
         table.add_row(str(product["id"]), product["name"], str(product["price"]))
     console.print(table)
 
+@app.command()
+def update_product(company_id: int, product_id: int, name: str, price: float):
+    """Modificar producto"""
+    service.update_product_in_company(company_id, product_id, name, price)
+    typer.echo("Producto actualizado")
+
 
 if __name__ == "__main__":
     """Corre la aplicaion CLI"""
