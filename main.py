@@ -62,6 +62,24 @@ def add_product(company_id: int, product_id: int, name: str, price: float):
     service.add_product_to_company(company_id, product_data)
     typer.echo("Producto agregado")
 
+@app.command()
+def list_products(company_id: int):
+    """Listar productos"""
+
+    products = service.list_products(company_id)
+    if not products:
+        console.print("No hay productos registrados", style="bold red")
+        return
+
+    table = Table(title=f"Productos - Empresa {company_id}")
+    table.add_column("ID", style="pink")
+    table.add_column("Nombre", style="magenta")
+    table.add_column("Precio", style="green")
+
+    for product in products:
+        table.add_row(str(product["id"]), product["name"], str(product["price"]))
+    console.print(table)
+
 
 if __name__ == "__main__":
     """Corre la aplicaion CLI"""
