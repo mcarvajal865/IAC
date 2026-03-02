@@ -151,3 +151,16 @@ class IACService:
 
         raise ServiceNotFoundError(f"Servicio con ID {service_id} no existe")
 
+    def update_service_in_company(self, company_id: int, service_id: int, new_name: str, new_price: float) -> None:
+        data = self._get_all_data()
+        company = self._get_company(data, company_id)
+
+        for service in company.get("services", []):
+            if service["id"] == service_id:
+                service["name"] = new_name
+                service["price"] = new_price
+                self._storage.save(data)
+                return
+
+        raise ServiceNotFoundError(f"Servicio con ID {service_id} no existe")
+
