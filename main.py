@@ -101,6 +101,24 @@ def add_service(company_id: int, service_id: int, name: str, price: float):
     service.add_service_to_company(company_id, service_data)
     typer.echo("Servicio agregado")
 
+@app.command()
+def list_services(company_id: int):
+    """Listar servicios"""
+
+    services = service.list_services(company_id)
+    if not services:
+        console.print("No hay servicios registrados", style="bold red")
+        return
+
+    table = Table(title=f"Servicios - Empresa {company_id}")
+    table.add_column("ID", style="cyan")
+    table.add_column("Nombre", style="magenta")
+    table.add_column("Precio", style="green")
+
+    for service_item in services:
+        table.add_row(str(service_item["id"]), service_item["name"], str(service_item["price"]))
+    console.print(table)
+
 
 if __name__ == "__main__":
     """Corre la aplicaion CLI"""
