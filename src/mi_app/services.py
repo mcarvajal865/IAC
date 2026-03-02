@@ -24,3 +24,8 @@ class IACService:
                 return company
 
         raise CompanyNotFoundError(f"La empresa con ID {company_id} no existe en el sistema")
+
+    def list_companies(self) -> List[Dict[str, Any]]:
+        """Retorna lista de todas las empresas registradas"""
+        data = self._get_all_data()
+        return data.get("companies", [])
