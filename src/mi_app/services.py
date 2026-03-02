@@ -142,3 +142,12 @@ class IACService:
         company = self._get_company(data, company_id)
 
         services = company.get("services", [])
+
+        for service in services:
+            if service["id"] == service_id:
+                services.remove(service)
+                self._storage.save(data)
+                return
+
+        raise ServiceNotFoundError(f"Servicio con ID {service_id} no existe")
+
