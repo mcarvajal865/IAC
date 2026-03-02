@@ -13,3 +13,10 @@ console = Console() #Muestra tablas bonitas
 """Inicializar variables de almacenamiento y servicios"""
 storage = JSONStorage(Path("data/database.json"))
 service = IACService(storage)
+
+@app.command()
+def create_company(id: int, name: str, nit: str) -> str:
+    """Crea nueva empresa"""
+    company = Company(id = id, name = name, nit = nit)
+    service.create_company(company)
+    typer.echo("Empresa creada exitosamente")
