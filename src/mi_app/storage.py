@@ -22,3 +22,8 @@ class JSONStorage:
 
         with self.filepath.open("r", encoding = "utf-8") as file: #utf-8: permite usar caracteres especiales
             return json.load(file)
+
+    def save(self, data: Dict[str, Any]) -> None:
+        """Guarda los datos en el archivo JSON, sobrescribe el contenido si ya existe"""
+        with self.filepath.open("w", encoding="utf-8") as file:
+            json.dump(data, file, indent=4)
