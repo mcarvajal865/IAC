@@ -78,6 +78,12 @@ class IACService:
 
         self._storage.save(data)
 
+    def list_products(self, company_id: int) -> List[Dict[str, Any]]:
+        """Lista todos los productos de la empresa"""
+        data = self._get_all_data()
+        company = self._get_company(data, company_id)
+        return company.get("products", [])
+
     def add_product_to_company(self, company_id: int, product_data: Dict) -> None:
         """Agregar un producto """
 
@@ -86,6 +92,12 @@ class IACService:
 
         company["products"].append(product_data)
         self._storage.save(data)
+
+    def delete_product_from_company(self, company_id: int, product_id: int) -> None:
+        """Elimina producto de una empresa"""
+        data = self._get_all_data()
+        company = self._get_company(data, company_id)
+
 
     def add_service_to_company(self, company_id: int, service_data: Dict) -> None:
         """Agregar un servicio """
