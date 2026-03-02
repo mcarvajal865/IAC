@@ -20,3 +20,22 @@ def create_company(id: int, name: str, nit: str) -> str:
     company = Company(id = id, name = name, nit = nit)
     service.create_company(company)
     typer.echo("Empresa creada exitosamente")
+
+@app.command()
+def list_companies():
+    """Lista todas las empresas registradas, usando tablas"""
+
+    companies = service.list_companies()
+    if not companies:
+        console.print("No hay empresas registradas", style="bold red")
+        return
+
+    table = Table(tittle = "Empresas Registradas")
+    table.add_column("ID", justify="righ", style="pink")
+    table.add_column("Nombre", style="magenta")
+    table.add_column("NIT", style="green")
+
+    for company in companies:
+        table.add_row(str(company["id"]), company["name"], company["nit"])
+    console.print(table)
+
