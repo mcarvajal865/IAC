@@ -131,7 +131,7 @@ def delete_service(company_id: int, service_id: int):
     service.delete_service_from_company(company_id, service_id)
     typer.echo("Servicio eliminado")
 
+#Correr aplicacion CLI
 
 if __name__ == "__main__":
-    """Corre la aplicaion CLI"""
     app()
