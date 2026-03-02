@@ -45,11 +45,11 @@ Almacenamiento de información en archivos de formato JSON, sin depender de sist
 | **CLI** | `main.py` | [cite_start]Interfaz de línea de comandos para la interacción con el usuario desde la terminal[cite: 12, 14]. |
 
 # 🛠️ Detalles Técnicos y Alcance
-El proyecto está orientado a fines académicos y demuestra la implementación de buenas prácticas de desarrollo en Python:
+Orientamos el proyecto a fines académicos, para demuestrar la implementación de buenas prácticas de desarrollo en Python:
 
 
 - ### Tipado Estático: 
-Uso de typing y dataclasses para mayor robustez.
+Usamos *typing* y *dataclasses* para mayor solidez.
 
 
 - ### Manejo de Excepciones: 
