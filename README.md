@@ -35,3 +35,11 @@ Listar todas las empresas registradas junto con sus respectivos servicios, produ
 Almacenamiento de información en archivos de formato JSON, sin depender de sistemas de bases de datos externos.
 
 # 📁 Estructura de Capas del Código
+
+| Capa | Archivo | Responsabilidad Principal |
+| :--- | :--- | :--- |
+| **Models** | `models.py` | [cite_start]Define las entidades `Company`, `Product` y `Service` con tipado estático[cite: 1, 12]. |
+| **Storage** | `storage.py` | [cite_start]Gestiona la persistencia de datos y la interfaz de lectura/escritura de archivos **JSON**[cite: 9, 12]. |
+| **Services** | `services.py` | [cite_start]Contiene la lógica de negocio, validaciones y reglas de gestión empresarial[cite: 11, 12]. |
+| **Exceptions** | `exceptions.py` | [cite_start]Define errores personalizados para un manejo adecuado de excepciones[cite: 16]. |
+| **CLI** | `main.py` | [cite_start]Interfaz de línea de comandos para la interacción con el usuario desde la terminal[cite: 12, 14]. |
