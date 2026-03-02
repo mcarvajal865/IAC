@@ -10,7 +10,8 @@ from src.iac.storage import JSONStorage
 app = typer.Typer() #Crea aplicaion CLI
 console = Console() #Muestra tablas bonitas
 
-"""Inicializar variables de almacenamiento y servicios"""
+"""Inicializar variables de
+almacenamiento y servicios"""
 storage = JSONStorage(Path("data/database.json"))
 service = IACService(storage)
 
@@ -25,7 +26,8 @@ def create_company(id: int, name: str, nit: str) -> None:
 
 @app.command()
 def list_companies() -> None:
-    """Lista todas las empresas registradas, usando tablas"""
+    """Lista todas las empresas registradas,
+    usando tablas"""
 
     companies = service.list_companies()
     if not companies:
@@ -38,7 +40,10 @@ def list_companies() -> None:
     table.add_column("NIT", style="green")
 
     for company in companies:
-        table.add_row(str(company["id"]), company["name"], company["nit"])
+        table.add_row(
+            str(company["id"]),
+            company["name"],
+            company["nit"])
     console.print(table)
 
 @app.command()
@@ -49,14 +54,20 @@ def delete_company(id:int) -> None:
 
 @app.command()
 def update_company(id: int, name: str, nit: str) -> None:
-    """Actualiza nombre y NIT de una empresa existente"""
+    """Actualiza nombre y
+    NIT de una empresa existente"""
     service.update_company(id, name, nit)
     typer.echo("Empresa actualizada correctamente")
 
 #Productos
 
 @app.command()
-def add_product(company_id: int, product_id: int, name: str, price: float) -> None:
+def add_product(
+        company_id: int,
+        product_id: int,
+        name: str,
+        price: float
+) -> None:
     """Agregar producto"""
     product_data = {"id": product_id, "name": name, "price": price}
     service.add_product_to_company(company_id, product_data)
@@ -77,11 +88,19 @@ def list_products(company_id: int) -> None:
     table.add_column("Precio", style="green")
 
     for product in products:
-        table.add_row(str(product["id"]), product["name"], str(product["price"]))
+        table.add_row(
+            str(product["id"]),
+            product["name"],
+            str(product["price"]))
     console.print(table)
 
 @app.command()
-def update_product(company_id: int, product_id: int, name: str, price: float)-> None:
+def update_product(
+        company_id: int,
+        product_id: int,
+        name: str,
+        price: float
+)-> None:
     """Modificar producto"""
     service.update_product_in_company(company_id, product_id, name, price)
     typer.echo("Producto actualizado")
@@ -95,7 +114,12 @@ def delete_product(company_id: int, product_id: int)-> None:
 #Servicios
 
 @app.command()
-def add_service(company_id: int, service_id: int, name: str, price: float)-> None:
+def add_service(
+        company_id: int,
+        service_id: int,
+        name: str,
+        price: float
+)-> None:
     """Agregar servicio"""
     service_data = {"id": service_id, "name": name, "price": price}
     service.add_service_to_company(company_id, service_data)
@@ -116,11 +140,19 @@ def list_services(company_id: int) -> None:
     table.add_column("Precio", style="green")
 
     for service_item in services:
-        table.add_row(str(service_item["id"]), service_item["name"], str(service_item["price"]))
+        table.add_row(
+            str(service_item["id"]),
+            service_item["name"],
+            str(service_item["price"]))
     console.print(table)
 
 @app.command()
-def update_service(company_id: int, service_id: int, name: str, price: float) -> None:
+def update_service(
+        company_id: int,
+        service_id: int,
+        name: str,
+        price: float
+) -> None:
     """Modificar servicio"""
     service.update_service_in_company(company_id, service_id, name, price)
     typer.echo("Servicio actualizado")
@@ -135,3 +167,6 @@ def delete_service(company_id: int, service_id: int) -> None:
 
 if __name__ == "__main__":
     app()
+
+
+

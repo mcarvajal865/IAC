@@ -18,28 +18,37 @@ class IACService:
         return self._storage.load()
 
     def _get_company(self, data: Dict[str, Any], company_id: int ) -> Dict[str, Any]:
-        """Busca empresa por su ID, si no existe lanza error"""
+        """Busca empresa por su ID,
+        si no existe lanza error"""
         companies = data.get("companies", [])
 
         for company in companies:
             if company["id"] == company_id:
                 return company
 
-        raise CompanyNotFoundError(f"La empresa con ID {company_id} no existe en el sistema")
+        raise CompanyNotFoundError(
+            f"La empresa con ID {company_id} no existe en el sistema"
+        )
 
     def list_companies(self) -> List[Dict[str, Any]]:
-        """Retorna lista de todas las empresas registradas"""
+        """Retorna lista de todas
+        las empresas registradas"""
         data = self._get_all_data()
         return data.get("companies", [])
 
     def create_company(self, company: Company) -> None:
-        """Registra una nueva empresa si no existe"""
+        """Registra una nueva
+        empresa si no existe"""
 
         if not company.name or not company.nit:
-            raise InvalidCompanyDataError("Nombre y NIT son requeridos")
+            raise InvalidCompanyDataError(
+                "Nombre y NIT son requeridos"
+            )
 
         if company.id <= 0:
-            raise InvalidCompanyDataError("El ID debe ser un número positivo")
+            raise InvalidCompanyDataError(
+                "El ID debe ser un número positivo"
+            )
 
         data = self._get_all_data()
         companies = data.get("companies", [])
@@ -47,7 +56,10 @@ class IACService:
         for c in companies:
             """Verificar si hay duplicados"""
             if c["id"] == company.id or c["nit"] == company.nit:
-                raise DuplicateCompanyError(f"La empresa con ID {company.id} o NIT {company.nit} ya está registrada")
+                raise DuplicateCompanyError(
+                    f"La empresa con ID {company.id} "
+                    f"o NIT {company.nit} ya está registrada"
+                )
 
         """Agregar nueva empresa"""
         new_company = {
@@ -70,8 +82,14 @@ class IACService:
         data["companies"].remove(company)
         self._storage.save(data)
 
-    def update_company(self, company_id: int, new_name: str, new_nit: str) -> None:
-        """Acutualiza el nombre y NIT de una empresa existente"""
+    def update_company(
+            self,
+            company_id: int,
+            new_name: str,
+            new_nit: str
+    ) -> None:
+        """Acutualiza el nombre y
+        NIT de una empresa existente"""
         data = self._get_all_data()
         company = self._get_company(data, company_id)
 
@@ -86,7 +104,11 @@ class IACService:
         company = self._get_company(data, company_id)
         return company.get("products", [])
 
-    def add_product_to_company(self, company_id: int, product_data: Dict[str, Any]) -> None:
+    def add_product_to_company(
+            self,
+            company_id: int,
+            product_data: Dict[str, Any]
+    ) -> None:
         """Agregar un producto """
 
         data = self._get_all_data()
@@ -108,9 +130,17 @@ class IACService:
                 self._storage.save(data)
                 return
 
-        raise ProductNotFoundError(f"El producto con ID {product_id} no existe")
+        raise ProductNotFoundError(
+            f"El producto con ID {product_id} no existe"
+        )
 
-    def update_product_in_company(self, company_id: int, product_id: int, new_name: str, new_price: float) -> None:
+    def update_product_in_company(
+            self,
+            company_id: int,
+            product_id: int,
+            new_name: str,
+            new_price: float
+    ) -> None:
         data = self._get_all_data()
         company = self._get_company(data, company_id)
 
@@ -121,7 +151,9 @@ class IACService:
                 self._storage.save(data)
                 return
 
-        raise ProductNotFoundError(f"Producto con ID {product_id} no existe")
+        raise ProductNotFoundError(
+            f"Producto con ID {product_id} no existe"
+        )
 
     def list_services(self, company_id: int) -> List[Dict[str, Any]]:
         data = self._get_all_data()
@@ -129,7 +161,11 @@ class IACService:
         return company.get("services", [])
 
 
-    def add_service_to_company(self, company_id: int, service_data: Dict[str, Any]) -> None:
+    def add_service_to_company(
+            self,
+            company_id: int,
+            service_data: Dict[str, Any]
+    ) -> None:
         """Agregar un servicio """
         data = self._get_all_data()
         company = self._get_company(data, company_id)
@@ -137,7 +173,11 @@ class IACService:
         company["services"].append(service_data)
         self._storage.save(data)
 
-    def delete_service_from_company(self, company_id: int, service_id: int) -> None:
+    def delete_service_from_company(
+            self,
+            company_id: int,
+            service_id: int
+    ) -> None:
         data = self._get_all_data()
         company = self._get_company(data, company_id)
 
@@ -149,9 +189,17 @@ class IACService:
                 self._storage.save(data)
                 return
 
-        raise ServiceNotFoundError(f"Servicio con ID {service_id} no existe")
+        raise ServiceNotFoundError(
+            f"Servicio con ID {service_id} no existe"
+        )
 
-    def update_service_in_company(self, company_id: int, service_id: int, new_name: str, new_price: float) -> None:
+    def update_service_in_company(
+            self,
+            company_id: int,
+            service_id: int,
+            new_name: str,
+            new_price: float
+    ) -> None:
         data = self._get_all_data()
         company = self._get_company(data, company_id)
 
@@ -162,5 +210,8 @@ class IACService:
                 self._storage.save(data)
                 return
 
-        raise ServiceNotFoundError(f"Servicio con ID {service_id} no existe")
+        raise ServiceNotFoundError(
+            f"Servicio con ID {service_id} no existe"
+        )
+
 
