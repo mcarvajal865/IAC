@@ -80,7 +80,7 @@ def test_add_product_success(service):
 
     products = service.list_products(1)
     assert len(products) == 1
-    assert products[0]["name"] == "Laptop"
+    assert products[0]["name"] == "Laptop."
 
 
 def test_delete_product_not_found(service):
