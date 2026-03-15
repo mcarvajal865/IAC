@@ -1,0 +1,15 @@
+site_name: IAC Documentation
+site_description: CRUD en Python con arquitectura modular
+site_author: Mateo Carvajal Zapata, Manuela Martinez Gil
+
+theme:
+  name: material
+
+plugins:
+  - search
+  - mkdocstrings
+
+nav:
+  - Inicio: index.md
+  - README: readme.md
+
