@@ -1,120 +1,102 @@
-# User Management CLI
+# IAC - Sistema de Gestión de Empresas
 
-Bienvenido a la documentación oficial de **User Management CLI**, una aplicación
-de línea de comandos desarrollada en Python para gestionar usuarios utilizando
-principios de **Clean Code**, **Testing** y **Arquitectura modular**.
+Bienvenido a la documentación oficial del proyecto **IAC**.
 
-Este proyecto fue diseñado como material educativo para aprender buenas prácticas
-de desarrollo en Python.
+Este proyecto consiste en una aplicación desarrollada en **Python** que permite
+gestionar empresas, productos y servicios utilizando una arquitectura modular.
+
+El sistema implementa operaciones **CRUD** para administrar la información
+almacenada en un archivo **JSON**, aplicando buenas prácticas de organización
+del código y manejo de errores.
 
 ---
 
 ## ✨ Características
 
-- CLI moderna basada en **Typer**
-- Persistencia de datos en archivo JSON
+- Gestión de **empresas**
+- Gestión de **productos**
+- Gestión de **servicios**
+- Persistencia de datos en **archivo JSON**
 - Arquitectura modular (`src layout`)
-- Pruebas unitarias con `pytest`
-- Uso de **mocks** para aislar dependencias
-- Excepciones personalizadas
-- Principios de diseño **SOLID**
-- Documentación generada automáticamente
+- Manejo de **excepciones personalizadas**
+- Pruebas unitarias con **pytest**
+- Documentación generada automáticamente con **MkDocs**
 
 ---
 
-## 🧠 Conceptos que aprenderás con este proyecto
+## 🧠 Conceptos que se aplican en este proyecto
 
 !!! info "Conceptos clave"
 
-    - Diseño limpio de funciones
-    - Encapsulamiento
-    - Testing con mocks
-    - Excepciones de dominio
+    - Arquitectura modular
     - Separación de responsabilidades
-    - Documentación profesional
+    - Manejo de excepciones personalizadas
+    - Persistencia de datos con JSON
+    - Testing con pytest
+    - Documentación automática con MkDocs
 
 ---
-
 
 ## 📦 Arquitectura del sistema
 
 El proyecto sigue una arquitectura simple por capas.
 
-``` mermaid
+```mermaid
 flowchart LR
-    CLI[CLI - Typer] --> Service[UserService]
+    CLI[Aplicación principal] --> Service[IACService]
     Service --> Storage[JSONStorage]
-    Service --> Model[User Model]
+    Service --> Model[Models]
     Storage --> Database[(database.json)]
 ```
 
 
 ## 📁 Estructura del proyecto
 
-```bash
+``` bash
 IAC/
 │
 ├── data/
 │   └── database.json
 │
-├── docs
-│     └── commands
-│     │    └── comandos.md
-│     └── indes.md
-│     └── readme.md
+├── docs/
+│   ├── commands/
+│   │   └── comandos.md
+│   ├── referencia/
+│   │   └── api.md
+│   ├── index.md
+│   └── readme.md
 │
-└── main.py
-└──mkdocs.yml
-└──poetry.lock
-└── pyproject.toml
-└── pyproject.toml.save
 ├── src/
-│   ├──  iac/
-│   │      ├── __init__.py
-│   │      ├── __pycache__
-│   │      ├── database.json
-│   │      ├── exceptions.py
-│   │      ├── implementacion.py
-│   │      ├── models.py
-│   │      ├── services.py
-│   │      └── storage.py
-│   │
-│   └── mi app
+│   └── iac/
+│       ├── __init__.py
+│       ├── exceptions.py
+│       ├── models.py
+│       ├── services.py
+│       └── storage.py
+│
 ├── tests/
-│   ├── __pycache__
-│   │   └── test_iac_service.cpython-312-pytest-9.0.2.pyc     
 │   └── test_iac_service.py
 │
-└── UV.LOCK
+├── main.py
+├── mkdocs.yml
+├── pyproject.toml
+└── uv.lock
 ```
 
-## 🚀 Flujo general de ejecución
+## 🚀 Flujo general del sistema
 
-``` mermaid
-sequenceDiagram
+El funcionamiento del sistema sigue el siguiente flujo
 
-participant CLI
-participant Service
-participant Storage
-participant Database
-
-CLI->>Service: create_user()
-Service->>Storage: load()
-Storage->>Database: read JSON
-Database-->>Storage: data
-Storage-->>Service: users
-Service->>Service: validate rules
-Service->>Storage: save()
-Storage->>Database: write JSON
-```
+![Arquitectura del sistema](images/arquitectura.png)
 
 ## 📚 Documentación
 
-Esta documentación está dividida en tres secciones principales:
+La documentación del proyecto está dividida en varias secciones:
 
-| Sección         | Descripción               |
-| --------------- | ------------------------- |
-| Guía de Usuario | Cómo usar la aplicación   |
-| Instalación     | Cómo instalar el proyecto |
-| API             | Documentación del código  |
+| Sección | Descripción |
+|--------|-------------|
+| Inicio | Explicación general del proyecto |
+| README | Información general del repositorio y propósito del proyecto |
+| Commands | Explicación de los comandos disponibles en la aplicación |
+| Referencia técnica | Documentación automática del código (clases, métodos y excepciones) |
 
