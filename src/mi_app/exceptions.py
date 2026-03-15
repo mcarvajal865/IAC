@@ -36,7 +36,3 @@ class DuplicateServiceError(IACError):
     """Al intentar registar un servicio ya existente, por id
     mensaje: El servicio ya está registrado"""
     pass
-
-class CompanyAlreadyExistsError(Exception):
-    """Se lanza cuando ya existe una empresa con el mismo ID."""
-    pass

@@ -97,21 +97,21 @@ uv sync
 
 La aplicación se ejecuta mediante:
 
-uv run python -m mi_app.cli
+uv run python main.py
 
 # 📌 Ejemplos de comandos
 
 ## ➤ Crear empresa
-#### uv run python -m mi_app.cli crear-empresa --id 1 --nombre "IAC SAS" --nit "900123456"
+#### uv run python main.py crear-empresa 1 "IAC SAS" "900123456"
 
 ## ➤ Listar empresas
-#### uv run python -m mi_app.cli listar-empresas
+#### uv run python main.py listar-empresas
 
 ## ➤ Agregar producto
-#### uv run python -m mi_app.cli agregar-producto --empresa 1 --id 101 --nombre "Laptop" --precio 2500 --stock 10
+#### uv run python main.py agregar-producto 1 101 "Laptop" 2500 10
 
 ## ➤ Agregar servicio
-#### uv run python -m mi_app.cli agregar-servicio --empresa 1 --id 201 --nombre "Consultoria" --precio 500
+#### uv run python main.py agregar-servicio 1 201 "Consultoria" 500
 
 # 🧪 4. Instrucciones de Testing
 El proyecto incluye 10 pruebas unitarias desarrolladas con pytest.
