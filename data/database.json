@@ -1,3 +1,11 @@
 {
-  "companies": []
+    "companies": [
+        {
+            "id": 1,
+            "name": "IAC SAS",
+            "nit": "900123456",
+            "services": [],
+            "products": []
+        }
+    ]
 }

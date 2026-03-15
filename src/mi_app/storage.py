@@ -18,14 +18,18 @@ class JSONStorage:
         self.filepath = filepath
 
     def load(self) -> Dict[str, Any]:
-        """Carga los datos desde el archivo JSON,
-        si el archivo no existe, retorna una estructura base"""
+        """Carga los datos desde el archivo JSON.
+        Si no existe o está vacío, retorna una estructura base.
+        """
         if not self.filepath.exists():
             return {"companies": []}
 
-        with self.filepath.open("r",encoding="utf-8") as file:
-            """utf-8: permite usar caracteres especiales"""
-            return json.load(file)
+        contenido = self.filepath.read_text(encoding="utf-8").strip()
+
+        if not contenido:
+            return {"companies": []}
+
+        return json.loads(contenido)
 
     def save(self, data: Dict[str, Any]) -> None:
         """Guarda los datos en el archivo JSON,
