@@ -29,7 +29,10 @@ class JSONStorage:
         if not contenido:
             return {"companies": []}
 
-        return json.loads(contenido)
+        try:
+            return json.loads(contenido)
+        except json.JSONDecodeError:
+            return {"companies": []}
 
     def save(self, data: Dict[str, Any]) -> None:
         """Guarda los datos en el archivo JSON,
