@@ -6,6 +6,13 @@
             "nit": "900123456",
             "services": [],
             "products": []
+        },
+        {
+            "id": 2,
+            "name": "Empresa Test",
+            "nit": "800111222",
+            "services": [],
+            "products": []
         }
     ]
 }
