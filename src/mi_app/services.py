@@ -1,8 +1,9 @@
 from typing import List, Dict, Any
-from .models import Company
-from .storage import StorageInterface
-from .exceptions import(
+from mi_app.models import Company
+from mi_app.storage import StorageInterface
+from mi_app.exceptions import(
     CompanyNotFoundError,
+    CompanyAlreadyExistsError,
     DuplicateCompanyError,
     InvalidCompanyDataError,
     ProductNotFoundError,
@@ -36,42 +37,22 @@ class IACService:
         data = self._get_all_data()
         return data.get("companies", [])
 
+    from mi_app.exceptions import CompanyAlreadyExistsError
+
     def create_company(self, company: Company) -> None:
-        """Registra una nueva
-        empresa si no existe"""
-
-        if not company.name or not company.nit:
-            raise InvalidCompanyDataError(
-                "Nombre y NIT son requeridos"
-            )
-
-        if company.id <= 0:
-            raise InvalidCompanyDataError(
-                "El ID debe ser un número positivo"
-            )
-
+        """Crear una nueva empresa, buscando los datos en JSON
+        si no existe la agrega o lanza un error si su id es duplicado"""
         data = self._get_all_data()
-        companies = data.get("companies", [])
 
-        for c in companies:
-            """Verificar si hay duplicados"""
-            if c["id"] == company.id or c["nit"] == company.nit:
-                raise DuplicateCompanyError(
-                    f"La empresa con ID {company.id} "
-                    f"o NIT {company.nit} ya está registrada"
-                )
+        if any(c["id"] == company.id for c in data["companies"]):
+            raise CompanyAlreadyExistsError("Ya existe una empresa con ese ID")
 
-        """Agregar nueva empresa"""
-        new_company = {
+        data["companies"].append({
             "id": company.id,
             "name": company.name,
             "nit": company.nit,
-            "services": [],
-            "products": []
-        }
+        })
 
-        companies.append(new_company)
-        data["companies"] = companies
         self._storage.save(data)
 
     def delete_company(self, company_id: int) -> None:

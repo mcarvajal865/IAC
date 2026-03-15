@@ -2,6 +2,7 @@ import typer
 from mi_app.models import Company
 from mi_app.services import IACService
 from mi_app.storage import JSONStorage
+from mi_app.exceptions import CompanyAlreadyExistsError
 from pathlib import Path
 
 app = typer.Typer()
@@ -12,9 +13,12 @@ service = IACService(storage)
 
 @app.command()
 def crear_empresa(id: int, nombre: str, nit: str):
-    empresa = Company(id=id, name=nombre, nit=nit)
-    service.create_company(empresa)
-    print("Empresa creada correctamente")
+    try:
+        empresa = Company(id=id, name=nombre, nit=nit)
+        service.create_company(empresa)
+        print("Empresa creada correctamente")
+    except CompanyAlreadyExistsError as e:
+        print(f"Error: {e}")
 
 
 @app.command()
