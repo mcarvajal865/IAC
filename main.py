@@ -1,172 +1,83 @@
-from pathlib import Path #Maneja rutas de archivos de forma segura
-import typer #Crear CLI facilmente
-from rich.console import Console #Imprime bonito
-from rich.table import Table #Imprime tablas
+from pathlib import Path# Path: permite trabajar con rutas de archivos de forma segura entre sistemas operativos
+import typer # Typer: librería para crear interfaces de línea de comandos (CLI)
+from rich.console import Console
+from rich.table import Table # Rich: librería para mostrar texto y tablas bonitas
+from mi_app.models import Company
+from mi_app.services import IACService
+from mi_app.storage import JSONStorage
+from mi_app.exceptions import CompanyAlreadyExistsError
 
-from src.iac.models import Company
-from src.iac.services import IACService
-from src.iac.storage import JSONStorage
+app = typer.Typer() # Crea la aplicación CLI donde se registrarán los comandos
+console = Console() # Crea un objeto consola de Rich para mostrar mensajes con formato en la terminal
+storage = JSONStorage(Path("data/database.json")) # Crea el sistema de almacenamiento usando el archivo JSON como base de datos
+service = IACService(storage) # Crea el servicio de negocio que usará el almacenamiento para manejar las empresas
 
-app = typer.Typer() #Crea aplicaion CLI
-console = Console() #Muestra tablas bonitas
+@app.command("crear-empresa")
+def crear_empresa(id: int, nombre: str, nit: str) -> None:
+    """
+    Comando de la CLI que permite crear una nueva empresa.
 
-"""Inicializar variables de
-almacenamiento y servicios"""
-storage = JSONStorage(Path("data/database.json"))
-service = IACService(storage)
+    Recibe:
+    id: identificador único de la empresa
+    nombre: nombre de la empresa
+    nit: número de identificación tributaria
+    """
+    try:
+        empresa = Company(id=id, name=nombre, nit=nit)
+        # Crea un objeto Company con los datos ingresados
 
-#Company
+        service.create_company(empresa)
+        # Llama al servicio de negocio para guardar la empresa
 
-@app.command()
-def create_company(id: int, name: str, nit: str) -> None:
-    """Crea nueva empresa"""
-    company = Company(id = id, name = name, nit = nit)
-    service.create_company(company)
-    typer.echo("Empresa creada exitosamente")
+        console.print("Empresa creada correctamente", style="bold green")
+        # Muestra un mensaje de éxito en la terminal
 
-@app.command()
-def list_companies() -> None:
-    """Lista todas las empresas registradas,
-    usando tablas"""
+    except CompanyAlreadyExistsError as e:
+        # Si ocurre un error porque ya existe una empresa con ese ID
 
-    companies = service.list_companies()
-    if not companies:
-        console.print("No hay empresas registradas", style="bold red")
+        console.print(f"Error: {e}", style="bold red")
+        # Muestra el mensaje de error en la terminal
+
+
+@app.command("listar-empresas")
+def listar_empresas() -> None:
+    """
+    Comando de la CLI que muestra todas las empresas registradas.
+    """
+
+    empresas = service.list_companies()
+    # Obtiene la lista de empresas almacenadas en el sistema
+
+    if not empresas:
+        # Si no hay empresas registradas
+
+        console.print("No hay empresas registradas", style="yellow")
+        # Muestra un mensaje indicando que la lista está vacía
         return
 
-    table = Table(tittle = "Empresas Registradas")
-    table.add_column("ID", justify="righ", style="pink")
-    table.add_column("Nombre", style="magenta")
-    table.add_column("NIT", style="green")
+    table = Table(title="Empresas Registradas")
+    # Crea una tabla para mostrar las empresas de forma organizada
 
-    for company in companies:
-        table.add_row(
-            str(company["id"]),
-            company["name"],
-            company["nit"])
+    table.add_column("ID", justify="right")
+    table.add_column("Nombre")
+    table.add_column("NIT")
+    # Define las columnas de la tabla
+
+    for e in empresas:
+        # Recorre cada empresa de la lista
+
+        table.add_row(str(e["id"]), e["name"], e["nit"])
+        # Agrega una fila a la tabla con los datos de la empresa
+
     console.print(table)
+    # Muestra la tabla en la terminal
 
-@app.command()
-def delete_company(id:int) -> None:
-    """Elimina una empresa, por id"""
-    service.delete_company(id)
-    typer.echo("Empresa eliminada exitosamente")
-
-@app.command()
-def update_company(id: int, name: str, nit: str) -> None:
-    """Actualiza nombre y
-    NIT de una empresa existente"""
-    service.update_company(id, name, nit)
-    typer.echo("Empresa actualizada correctamente")
-
-#Productos
-
-@app.command()
-def add_product(
-        company_id: int,
-        product_id: int,
-        name: str,
-        price: float
-) -> None:
-    """Agregar producto"""
-    product_data = {"id": product_id, "name": name, "price": price}
-    service.add_product_to_company(company_id, product_data)
-    typer.echo("Producto agregado")
-
-@app.command()
-def list_products(company_id: int) -> None:
-    """Listar productos"""
-
-    products = service.list_products(company_id)
-    if not products:
-        console.print("No hay productos registrados", style="bold red")
-        return
-
-    table = Table(title=f"Productos - Empresa {company_id}")
-    table.add_column("ID", style="pink")
-    table.add_column("Nombre", style="magenta")
-    table.add_column("Precio", style="green")
-
-    for product in products:
-        table.add_row(
-            str(product["id"]),
-            product["name"],
-            str(product["price"]))
-    console.print(table)
-
-@app.command()
-def update_product(
-        company_id: int,
-        product_id: int,
-        name: str,
-        price: float
-)-> None:
-    """Modificar producto"""
-    service.update_product_in_company(company_id, product_id, name, price)
-    typer.echo("Producto actualizado")
-
-@app.command()
-def delete_product(company_id: int, product_id: int)-> None:
-    """Eliminar producto"""
-    service.delete_product_from_company(company_id, product_id)
-    typer.echo("Producto eliminado")
-
-#Servicios
-
-@app.command()
-def add_service(
-        company_id: int,
-        service_id: int,
-        name: str,
-        price: float
-)-> None:
-    """Agregar servicio"""
-    service_data = {"id": service_id, "name": name, "price": price}
-    service.add_service_to_company(company_id, service_data)
-    typer.echo("Servicio agregado")
-
-@app.command()
-def list_services(company_id: int) -> None:
-    """Listar servicios"""
-
-    services = service.list_services(company_id)
-    if not services:
-        console.print("No hay servicios registrados", style="bold red")
-        return
-
-    table = Table(title=f"Servicios - Empresa {company_id}")
-    table.add_column("ID", style="cyan")
-    table.add_column("Nombre", style="magenta")
-    table.add_column("Precio", style="green")
-
-    for service_item in services:
-        table.add_row(
-            str(service_item["id"]),
-            service_item["name"],
-            str(service_item["price"]))
-    console.print(table)
-
-@app.command()
-def update_service(
-        company_id: int,
-        service_id: int,
-        name: str,
-        price: float
-) -> None:
-    """Modificar servicio"""
-    service.update_service_in_company(company_id, service_id, name, price)
-    typer.echo("Servicio actualizado")
-
-@app.command()
-def delete_service(company_id: int, service_id: int) -> None:
-    """Eliminar servicio"""
-    service.delete_service_from_company(company_id, service_id)
-    typer.echo("Servicio eliminado")
-
-#Correr aplicacion CLI
 
 if __name__ == "__main__":
+    # Punto de entrada del programa cuando se ejecuta el archivo directamente
+
     app()
+    # Ejecuta la aplicación CLI de Typer
 
 
 

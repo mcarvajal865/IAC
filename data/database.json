@@ -13,6 +13,11 @@
             "nit": "800111222",
             "services": [],
             "products": []
+        },
+        {
+            "id": 3,
+            "name": "Empresa Manuela",
+            "nit": "900126546"
         }
     ]
 }
