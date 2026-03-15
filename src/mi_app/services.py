@@ -3,7 +3,6 @@ from mi_app.models import Company
 from mi_app.storage import StorageInterface
 from mi_app.exceptions import(
     CompanyNotFoundError,
-    CompanyAlreadyExistsError,
     DuplicateCompanyError,
     InvalidCompanyDataError,
     ProductNotFoundError,
@@ -37,20 +36,27 @@ class IACService:
         data = self._get_all_data()
         return data.get("companies", [])
 
-    from mi_app.exceptions import CompanyAlreadyExistsError
 
     def create_company(self, company: Company) -> None:
-        """Crear una nueva empresa, buscando los datos en JSON
-        si no existe la agrega o lanza un error si su id es duplicado"""
+        " ""Método para crear una nueva empresa"""
+
         data = self._get_all_data()
 
+        if not company.name.strip():
+            raise InvalidCompanyDataError("El nombre de la empresa no puede estar vacío")
+
+        if company.id < 1:
+            raise InvalidCompanyDataError("El ID de la empresa debe ser mayor o igual a 1")
+
         if any(c["id"] == company.id for c in data["companies"]):
-            raise CompanyAlreadyExistsError("Ya existe una empresa con ese ID")
+            raise DuplicateCompanyError("Ya existe una empresa con ese ID")
 
         data["companies"].append({
             "id": company.id,
             "name": company.name,
             "nit": company.nit,
+            "products": [],
+            "services": [],
         })
 
         self._storage.save(data)

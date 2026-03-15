@@ -104,6 +104,9 @@ uv run python main.py
 ## ➤ Crear empresa
 #### uv run python main.py crear-empresa 1 "IAC SAS" "900123456"
 
+## ➤ Eliminar empresa
+#### uv run python main.py eliminar-empresa 1
+
 ## ➤ Listar empresas
 #### uv run python main.py listar-empresas
 
