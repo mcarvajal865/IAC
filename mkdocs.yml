@@ -4,12 +4,52 @@ site_author: Mateo Carvajal Zapata, Manuela Martinez Gil
 
 theme:
   name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
 
 plugins:
   - search
-  - mkdocstrings
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["src"]
+          options:
+            show_source: true
+            show_root_heading: true
+            show_root_toc_entry: true
+            show_signature_annotations: true
+            show_symbol_type_heading: true
+            members_order: source
+            docstring_style: google
 
 nav:
   - Inicio: index.md
-  - README: readme.md
+  - README del proyecto: readme.md
+  - Commands:
+      - Comandos CLI: commands/comandos.md
+  - Referencia técnica:
+      - API de Python: referencia/api.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
 

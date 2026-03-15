@@ -1,3 +1,25 @@
 {
-    "companies": []
+    "companies": [
+        {
+            "id": 1,
+            "name": "IAC SAS",
+            "nit": "900123456",
+            "services": [
+                {
+                    "id": 201,
+                    "nombre": "Consultor\u00eda",
+                    "description": "Servicio empresarial",
+                    "price": 500
+                }
+            ],
+            "products": [
+                {
+                    "id": 101,
+                    "nombre": "Laptop",
+                    "price": 2500,
+                    "stock": 5
+                }
+            ]
+        }
+    ]
 }

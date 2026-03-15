@@ -1,8 +1,8 @@
 import pytest
-from mi_app.services import IACService
-from mi_app.models import Company
-from mi_app.storage import JSONStorage
-from mi_app.exceptions import (
+from iac.services import IACService
+from iac.models import Company
+from iac.storage import JSONStorage
+from iac.exceptions import (
     CompanyNotFoundError,
     DuplicateCompanyError,
     InvalidCompanyDataError,
