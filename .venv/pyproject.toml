@@ -1,24 +1,25 @@
-[tool.poetry]
-name = "IAC"
+[project]
+name = "iac"
 version = "0.1.0"
 description = "Proyecto IAC - CRUD simple con Typer y JSON"
-authors = ["Mateo Carvajal Zapata <tu_correo@example.com>"]
-package-mode = false   # Esto evita errores de instalación como paquete
 readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+  { name = "Mateo Carvajal Zapata" }
+]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-typer = "^0.9"
-rich = "^13.4"
+dependencies = [
+  "typer>=0.9",
+  "rich>=13.4"
+]
 
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.15.0"  # versión estable en PyPI
+[project.optional-dependencies]
+dev = [
+  "ruff>=0.15.0",
+  "pytest>=9.0.2"
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.ruff]
-line-length = 88
-select = ["E", "F", "W", "C90"]
-exclude = ["data", ".venv", "tests"]
