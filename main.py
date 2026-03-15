@@ -1,137 +1,251 @@
-from pathlib import Path #Maneja rutas de archivos de forma segura
-import typer #Crear CLI facilmente
-from rich.console import Console #Imprime bonito
-from rich.table import Table #Imprime tablas
+from pathlib import Path
+import typer
+from rich.console import Console
+from rich.table import Table
+from mi_app.models import Company
+from mi_app.services import IACService
+from mi_app.storage import JSONStorage
+from mi_app.exceptions import (
+    CompanyNotFoundError,
+    DuplicateCompanyError,
+    InvalidCompanyDataError,
+    ProductNotFoundError,
+    ServiceNotFoundError,
+)
 
-from src.iac.models import Company
-from src.iac.services import IACService
-from src.iac.storage import JSONStorage
-
-app = typer.Typer() #Crea aplicaion CLI
-console = Console() #Muestra tablas bonitas
-
-"""Inicializar variables de almacenamiento y servicios"""
+app = typer.Typer()
+console = Console()
 storage = JSONStorage(Path("data/database.json"))
 service = IACService(storage)
 
-#Company
 
-@app.command()
-def create_company(id: int, name: str, nit: str) -> None:
-    """Crea nueva empresa"""
-    company = Company(id = id, name = name, nit = nit)
-    service.create_company(company)
-    typer.echo("Empresa creada exitosamente")
+@app.command("create-company")
+def create_company(company_id: int, name: str, nit: str) -> None:
+    """Crea una nueva empresa en el sistema."""
+    try:
+        company = Company(id=company_id, name=name, nit=nit)
+        service.create_company(company)
+        console.print("Empresa creada correctamente", style="bold green")
+    except (DuplicateCompanyError, InvalidCompanyDataError) as error:
+        console.print(f"Error: {error}", style="bold red")
 
-@app.command()
+
+@app.command("list-companies")
 def list_companies() -> None:
-    """Lista todas las empresas registradas, usando tablas"""
-
+    """Muestra todas las empresas registradas."""
     companies = service.list_companies()
+
     if not companies:
-        console.print("No hay empresas registradas", style="bold red")
+        console.print("No hay empresas registradas", style="yellow")
         return
 
-    table = Table(tittle = "Empresas Registradas")
-    table.add_column("ID", justify="righ", style="pink")
-    table.add_column("Nombre", style="magenta")
-    table.add_column("NIT", style="green")
+    table = Table(
+        title="Empresas Registradas",
+        header_style="bold cyan",
+        border_style="cyan",
+    )
+    table.add_column("ID", justify="right", style="magenta")
+    table.add_column("Name", style="green")
+    table.add_column("NIT", style="yellow")
 
     for company in companies:
-        table.add_row(str(company["id"]), company["name"], company["nit"])
+        table.add_row(
+            str(company["id"]),
+            company["name"],
+            company["nit"],
+        )
+
     console.print(table)
 
-@app.command()
-def delete_company(id:int) -> None:
-    """Elimina una empresa, por id"""
-    service.delete_company(id)
-    typer.echo("Empresa eliminada exitosamente")
 
-@app.command()
-def update_company(id: int, name: str, nit: str) -> None:
-    """Actualiza nombre y NIT de una empresa existente"""
-    service.update_company(id, name, nit)
-    typer.echo("Empresa actualizada correctamente")
+@app.command("update-company")
+def update_company(company_id: int, new_name: str, new_nit: str) -> None:
+    """Actualiza el nombre y el NIT de una empresa."""
+    try:
+        service.update_company(company_id, new_name, new_nit)
+        console.print("Empresa actualizada correctamente", style="bold green")
+    except CompanyNotFoundError as error:
+        console.print(f"Error: {error}", style="bold red")
 
-#Productos
 
-@app.command()
-def add_product(company_id: int, product_id: int, name: str, price: float) -> None:
-    """Agregar producto"""
-    product_data = {"id": product_id, "name": name, "price": price}
-    service.add_product_to_company(company_id, product_data)
-    typer.echo("Producto agregado")
+@app.command("delete-company")
+def delete_company(company_id: int) -> None:
+    """Elimina una empresa según su ID."""
+    try:
+        service.delete_company(company_id)
+        console.print("Empresa eliminada correctamente", style="bold green")
+    except CompanyNotFoundError as error:
+        console.print(f"Error: {error}", style="bold red")
 
-@app.command()
+
+@app.command("add-product")
+def add_product(
+    company_id: int,
+    product_id: int,
+    name: str,
+    price: float,
+    stock: int,
+) -> None:
+    """Agrega un producto a una empresa."""
+    try:
+        product_data = {
+            "id": product_id,
+            "name": name,
+            "price": price,
+            "stock": stock,
+        }
+        service.add_product_to_company(company_id, product_data)
+        console.print("Producto agregado correctamente", style="bold green")
+    except CompanyNotFoundError as error:
+        console.print(f"Error: {error}", style="bold red")
+
+
+@app.command("list-products")
 def list_products(company_id: int) -> None:
-    """Listar productos"""
+    """Muestra todos los productos de una empresa."""
+    try:
+        products = service.list_products(company_id)
 
-    products = service.list_products(company_id)
-    if not products:
-        console.print("No hay productos registrados", style="bold red")
-        return
+        if not products:
+            console.print("No hay productos registrados", style="yellow")
+            return
 
-    table = Table(title=f"Productos - Empresa {company_id}")
-    table.add_column("ID", style="pink")
-    table.add_column("Nombre", style="magenta")
-    table.add_column("Precio", style="green")
+        table = Table(
+            title="Productos Registrados",
+            header_style="bold cyan",
+            border_style="cyan",
+        )
+        table.add_column("ID", justify="right", style="magenta")
+        table.add_column("Name", style="green")
+        table.add_column("Price", style="yellow")
+        table.add_column("Stock", style="blue")
 
-    for product in products:
-        table.add_row(str(product["id"]), product["name"], str(product["price"]))
-    console.print(table)
+        for product in products:
+            table.add_row(
+                str(product["id"]),
+                product["name"],
+                str(product["price"]),
+                str(product["stock"]),
+            )
 
-@app.command()
-def update_product(company_id: int, product_id: int, name: str, price: float)-> None:
-    """Modificar producto"""
-    service.update_product_in_company(company_id, product_id, name, price)
-    typer.echo("Producto actualizado")
+        console.print(table)
+    except CompanyNotFoundError as error:
+        console.print(f"Error: {error}", style="bold red")
 
-@app.command()
-def delete_product(company_id: int, product_id: int)-> None:
-    """Eliminar producto"""
-    service.delete_product_from_company(company_id, product_id)
-    typer.echo("Producto eliminado")
 
-#Servicios
+@app.command("update-product")
+def update_product(
+    company_id: int,
+    product_id: int,
+    new_name: str,
+    new_price: float,
+) -> None:
+    """Actualiza el nombre y el precio de un producto."""
+    try:
+        service.update_product_in_company(
+            company_id,
+            product_id,
+            new_name,
+            new_price,
+        )
+        console.print("Producto actualizado correctamente", style="bold green")
+    except (CompanyNotFoundError, ProductNotFoundError) as error:
+        console.print(f"Error: {error}", style="bold red")
 
-@app.command()
-def add_service(company_id: int, service_id: int, name: str, price: float)-> None:
-    """Agregar servicio"""
-    service_data = {"id": service_id, "name": name, "price": price}
-    service.add_service_to_company(company_id, service_data)
-    typer.echo("Servicio agregado")
 
-@app.command()
+@app.command("delete-product")
+def delete_product(company_id: int, product_id: int) -> None:
+    """Elimina un producto de una empresa."""
+    try:
+        service.delete_product_from_company(company_id, product_id)
+        console.print("Producto eliminado correctamente", style="bold green")
+    except (CompanyNotFoundError, ProductNotFoundError) as error:
+        console.print(f"Error: {error}", style="bold red")
+
+
+@app.command("add-service")
+def add_service(
+    company_id: int,
+    service_id: int,
+    name: str,
+    price: float,
+) -> None:
+    """Agrega un servicio a una empresa."""
+    try:
+        service_data = {
+            "id": service_id,
+            "name": name,
+            "price": price,
+        }
+        service.add_service_to_company(company_id, service_data)
+        console.print("Servicio agregado correctamente", style="bold green")
+    except CompanyNotFoundError as error:
+        console.print(f"Error: {error}", style="bold red")
+
+
+@app.command("list-services")
 def list_services(company_id: int) -> None:
-    """Listar servicios"""
+    """Muestra todos los servicios de una empresa."""
+    try:
+        services = service.list_services(company_id)
 
-    services = service.list_services(company_id)
-    if not services:
-        console.print("No hay servicios registrados", style="bold red")
-        return
+        if not services:
+            console.print("No hay servicios registrados", style="yellow")
+            return
 
-    table = Table(title=f"Servicios - Empresa {company_id}")
-    table.add_column("ID", style="cyan")
-    table.add_column("Nombre", style="magenta")
-    table.add_column("Precio", style="green")
+        table = Table(
+            title="Servicios Registrados",
+            header_style="bold cyan",
+            border_style="cyan",
+        )
+        table.add_column("ID", justify="right", style="magenta")
+        table.add_column("Name", style="green")
+        table.add_column("Price", style="yellow")
 
-    for service_item in services:
-        table.add_row(str(service_item["id"]), service_item["name"], str(service_item["price"]))
-    console.print(table)
+        for current_service in services:
+            table.add_row(
+                str(current_service["id"]),
+                current_service["name"],
+                str(current_service["price"]),
+            )
 
-@app.command()
-def update_service(company_id: int, service_id: int, name: str, price: float) -> None:
-    """Modificar servicio"""
-    service.update_service_in_company(company_id, service_id, name, price)
-    typer.echo("Servicio actualizado")
+        console.print(table)
+    except CompanyNotFoundError as error:
+        console.print(f"Error: {error}", style="bold red")
 
-@app.command()
+
+@app.command("update-service")
+def update_service(
+    company_id: int,
+    service_id: int,
+    new_name: str,
+    new_price: float,
+) -> None:
+    """Actualiza el nombre y el precio de un servicio."""
+    try:
+        service.update_service_in_company(
+            company_id,
+            service_id,
+            new_name,
+            new_price,
+        )
+        console.print("Servicio actualizado correctamente", style="bold green")
+    except (CompanyNotFoundError, ServiceNotFoundError) as error:
+        console.print(f"Error: {error}", style="bold red")
+
+
+@app.command("delete-service")
 def delete_service(company_id: int, service_id: int) -> None:
-    """Eliminar servicio"""
-    service.delete_service_from_company(company_id, service_id)
-    typer.echo("Servicio eliminado")
+    """Elimina un servicio de una empresa."""
+    try:
+        service.delete_service_from_company(company_id, service_id)
+        console.print("Servicio eliminado correctamente", style="bold green")
+    except (CompanyNotFoundError, ServiceNotFoundError) as error:
+        console.print(f"Error: {error}", style="bold red")
 
-#Correr aplicacion CLI
 
 if __name__ == "__main__":
     app()
+
+
+
