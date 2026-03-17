@@ -1,7 +1,7 @@
 from pathlib import Path
-from mi_app.storage import JSONStorage
-from mi_app.services import IACService
-from mi_app.models import Company
+from iac.storage import JSONStorage
+from iac.services import IACService
+from iac.models import Company
 
 storage = JSONStorage(Path("database.json"))
 service = IACService(storage)

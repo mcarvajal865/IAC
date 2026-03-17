@@ -10,6 +10,7 @@ dependencies = [
     "mkdocs>=1.6.1",
     "mkdocstrings[python]>=1.0.3",
     "mkdocs-material>=9.7.5",
+    "radon>=6.0.1",
 ]
 
 [dependency-groups]
@@ -29,4 +30,4 @@ pythonpath = ["src"]
 line-length = 88
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/mi_app"]
+packages = ["src/iac"]

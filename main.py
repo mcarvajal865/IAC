@@ -2,10 +2,10 @@ from pathlib import Path
 import typer
 from rich.console import Console
 from rich.table import Table
-from mi_app.models import Company
-from mi_app.services import IACService
-from mi_app.storage import JSONStorage
-from mi_app.exceptions import (
+from iac.models import Company
+from iac.services import IACService
+from iac.storage import JSONStorage
+from iac.exceptions import (
     CompanyNotFoundError,
     DuplicateCompanyError,
     InvalidCompanyDataError,
@@ -26,7 +26,7 @@ def create_company(company_id: int, name: str, nit: str) -> None:
         company = Company(id=company_id, name=name, nit=nit)
         service.create_company(company)
         console.print("Empresa creada correctamente", style="bold green")
-    except (DuplicateCompanyError, InvalidCompanyDataError) as error:
+    except (DuplicateCompanyError, InvalidCompanyDataError, ValueError) as error:
         console.print(f"Error: {error}", style="bold red")
 
 
@@ -64,7 +64,7 @@ def update_company(company_id: int, new_name: str, new_nit: str) -> None:
     try:
         service.update_company(company_id, new_name, new_nit)
         console.print("Empresa actualizada correctamente", style="bold green")
-    except CompanyNotFoundError as error:
+    except (CompanyNotFoundError, ValueError) as error:
         console.print(f"Error: {error}", style="bold red")
 
 
@@ -96,7 +96,7 @@ def add_product(
         }
         service.add_product_to_company(company_id, product_data)
         console.print("Producto agregado correctamente", style="bold green")
-    except CompanyNotFoundError as error:
+    except (CompanyNotFoundError, ValueError)  as error:
         console.print(f"Error: {error}", style="bold red")
 
 
@@ -149,7 +149,7 @@ def update_product(
             new_price,
         )
         console.print("Producto actualizado correctamente", style="bold green")
-    except (CompanyNotFoundError, ProductNotFoundError) as error:
+    except (CompanyNotFoundError, ProductNotFoundError, ValueError) as error:
         console.print(f"Error: {error}", style="bold red")
 
 
@@ -179,7 +179,7 @@ def add_service(
         }
         service.add_service_to_company(company_id, service_data)
         console.print("Servicio agregado correctamente", style="bold green")
-    except CompanyNotFoundError as error:
+    except (CompanyNotFoundError, ValueError) as error:
         console.print(f"Error: {error}", style="bold red")
 
 
@@ -230,7 +230,7 @@ def update_service(
             new_price,
         )
         console.print("Servicio actualizado correctamente", style="bold green")
-    except (CompanyNotFoundError, ServiceNotFoundError) as error:
+    except (CompanyNotFoundError, ServiceNotFoundError, ValueError) as error:
         console.print(f"Error: {error}", style="bold red")
 
 
