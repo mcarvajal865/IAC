@@ -2,10 +2,10 @@ from pathlib import Path
 import typer
 from rich.console import Console
 from rich.table import Table
-from mi_app.models import Company
-from mi_app.services import IACService
-from mi_app.storage import JSONStorage
-from mi_app.exceptions import (
+from iac.models import Company
+from iac.services import IACService
+from iac.storage import JSONStorage
+from iac.exceptions import (
     CompanyNotFoundError,
     DuplicateCompanyError,
     InvalidCompanyDataError,
