@@ -42,7 +42,7 @@ nav:
       - Comandos: user-guide/commands.md
       - Persistencia: user-guide/persistence.md
   - Commands:
-      - Comandos CLI: commands/comandos.md
+      - Comandos CLI: Commands/comandosCLI.md
   - Referencia técnica:
       - API de Python: referencia/api.md
 

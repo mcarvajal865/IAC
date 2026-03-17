@@ -53,33 +53,27 @@ flowchart LR
 ## 📁 Estructura del proyecto
 
 ``` bash
-IAC/
-│
-├── data/
-│   └── database.json
-│
-├── docs/
-│   ├── commands/
-│   │   └── comandos.md
-│   ├── referencia/
-│   │   └── api.md
-│   ├── index.md
-│   └── readme.md
-│
-├── src/
-│   └── iac/
-│       ├── __init__.py
-│       ├── exceptions.py
-│       ├── models.py
-│       ├── services.py
-│       └── storage.py
-│
-├── tests/
-│   └── test_iac_service.py
-│
+IAC
+├── README.md
+├── data
+│   └── database.json
+├── docs
+│   ├── Commands
+│   ├── architecture.md
+│   ├── getting-started.md
+│   ├── images
+│   ├── index.md
+│   ├── readme.md
+│   ├── referencia
+│   └── user-guide
 ├── main.py
 ├── mkdocs.yml
 ├── pyproject.toml
+├── src
+│   └── iac
+├── tests
+│   ├── __pycache__
+│   └── test_iac_service.py
 └── uv.lock
 ```
 
