@@ -32,18 +32,14 @@ def test_create_company_success(service):
 
 def test_create_company_invalid_name(service):
     """Verifica que tenga nombre"""
-    company = Company(id=1, name="", nit="123")
-
-    with pytest.raises(InvalidCompanyDataError):
-        service.create_company(company)
+    with pytest.raises(ValueError, match="El nombre no puede estar vacío"):
+        Company(id=1, name="", nit="123")
 
 
 def test_create_company_invalid_id(service):
     """Verifica que el id >= 1"""
-    company = Company(id=-1, name="IAC", nit="123")
-
-    with pytest.raises(InvalidCompanyDataError):
-        service.create_company(company)
+    with pytest.raises(ValueError, match="El id debe ser mayor que 0"):
+        Company(id=-1, name="IAC", nit="123")
 
 
 def test_create_duplicate_company(service):
